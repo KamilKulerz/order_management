@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Zamówienia</h2>
+    <ul>
+        {% for order in object_list %}
+            <li>{{ order.id }} | {{order.customer_id}} | {{order.status}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

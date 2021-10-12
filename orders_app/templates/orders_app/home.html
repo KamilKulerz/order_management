@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    $(document).ready(function(){
+      $('.toast').toast('show');
+    });
+
+
+</script>
+
+{% csrf_token %}
+<div class="card">
+    {% if user.is_staff %}
+        <div class="card-body">
+            <h1 align="center">Strona startowa</h1>
+        </div>
+        </div>
+    {% else %}
+        <div class="card-body">
+            <h1 align="center">YOUE ARE NOT LOGGED IN</h1>
+        </div>
+    {% endif %}
+</div>
+
+    
+    <form method="POST" enctype="multipart/form-data">
+
+    <div class="input-group">
+
+  </form>
+
+    <div>
+
+        <p>
+        </p>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <div class="toast" data-delay=2000>
+        <div class="toast-body">
+          {{ message }}
+        </div>
+      </div>
+        <!-- <li class="{{ message.tags }}">{{ message }}</li> -->
+      {% endfor %}
+    </ul>
+
+    {% endif %}
+{% endblock %}
