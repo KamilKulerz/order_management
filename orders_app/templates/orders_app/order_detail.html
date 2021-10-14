@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Zamówienie szczegol</h2>
+    <ul>
+        <li>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</li>
+        {% for ordered_item in order.ordereditem_set.all %}
+            {% include 'orders_app/ordered_item_detail.html' %}    
+        {% endfor %}
+        
+    </ul>
+{% endblock %}
