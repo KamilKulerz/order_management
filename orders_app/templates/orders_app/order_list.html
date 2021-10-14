@@ -5,6 +5,9 @@
     <ul>
         {% for order in object_list %}
             <li>{{ order.id }} | {{order.customer_id}} | {{order.status}}</li>
+            <a href="{% url 'orders_app:order' order.id %}">details</a>
+            <a href="{% url 'orders_app:delete_order' order.id %}">delete</a>
+
         {% endfor %}
     </ul>
 {% endblock %}
