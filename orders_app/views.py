@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView
-from orders_app.models import Order, Item, Customer, Category
+from django.urls.base import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic.edit import DeleteView
+from orders_app.models import Order, Item, Customer, Category, OrderedItem
 from django.urls import reverse
 
 
@@ -19,6 +21,23 @@ def home(request):
 class OrdersList(ListView):
     model = Order
     template_name = 'orders_app/order_list.html'
+
+
+class OrderDeleteView(DeleteView):
+    model = Order
+    success_url = reverse_lazy('orders_app:orders')
+
+
+class OrderDetail(DetailView):
+    model = Order
+    # context_object_name = "issue"
+    template_name = "orders_app/order_detail.html"
+
+
+class OrderedItemDetail(DetailView):
+    model = OrderedItem
+    # context_object_name = "issue"
+    template_name = "orders_app/ordered_item_detail.html"
 
 
 class ItemsList(ListView):
