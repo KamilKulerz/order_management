@@ -7,4 +7,5 @@
             <li>{{ item.name }} | {{ item.price }} | {{ item.category_id }} | {{ item.unit }}</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'orders_app:add_items' %}">add item</a>    
 {% endblock %}

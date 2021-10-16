@@ -7,4 +7,6 @@
             <li>{{ customer.name }}</li>
         {% endfor %}
     </ul>
+
+    <a href="{% url 'orders_app:add_customers' %}">add customer</a>    
 {% endblock %}
