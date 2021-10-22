@@ -1,10 +1,12 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView
 from orders_app.models import Order, Item, Customer, Category, OrderedItem
-from django.urls import reverse
+from django.urls import reverse, resolve
+from django.core import serializers
 
 
 def index(request):
@@ -18,9 +20,18 @@ def home(request):
     return render(request, 'orders_app/home.html', context)
 
 
-class OrdersList(ListView):
-    model = Order
-    template_name = 'orders_app/order_list.html'
+# class OrdersList(ListView):
+#     model = Order
+#     template_name = 'orders_app/order_list.html'
+
+def order_list(request):
+
+    context = {}
+
+    if request.method == 'GET':
+        queryset = Order.objects.all()
+        context['object_list'] = queryset
+    return render(request, 'orders_app/order_list.html', context)
 
 
 class OrderDeleteView(DeleteView):
@@ -37,7 +48,7 @@ class OrderDetail(DetailView):
 class OrderedItemDetail(DetailView):
     model = OrderedItem
     # context_object_name = "issue"
-    template_name = "orders_app/ordered_item_detail.html"
+    template_name = "orders_app/ordereditem_detail.html"
 
 
 class ItemsList(ListView):
@@ -69,6 +80,21 @@ class OrderCreateView(CreateView):
 
     def get_success_url(self):  # new
         return reverse('orders_app:orders')
+
+
+class OrderedItemCreateView(CreateView):
+    model = OrderedItem
+    fields = ['item', 'quantity', 'status']
+
+    def get_success_url(self):  # new
+        # return resolve(f'/orders/{self.request.GET["order_id"]}')
+        return reverse('orders_app:orders')
+
+    def form_valid(self, form):
+        #!!!!!!!!!!!!!!!!!!!!!!!
+        form.instance.order_id = Order.objects.get(
+            id=self.request.GET['order_id'])
+        return super(OrderedItemCreateView, self).form_valid(form)
 
 
 class CustomerCreateView(CreateView):
