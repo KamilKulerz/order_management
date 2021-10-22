@@ -4,9 +4,11 @@
     <h2>Zamówienie szczegol</h2>
     <ul>
         <li>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</li>
-        {% for ordered_item in order.ordereditem_set.all %}
-            {% include 'orders_app/ordered_item_detail.html' %}    
+        {% for ordereditem in order.ordereditem_set.all %}
+            {% include 'orders_app/ordereditem_detail.html' %}    
         {% endfor %}
+
+        <a href="{% url 'orders_app:add_ordereditem' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
         
     </ul>
 {% endblock %}
