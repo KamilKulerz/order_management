@@ -1,12 +1,13 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView
 from orders_app.models import Order, Item, Customer, Category, OrderedItem
 from django.urls import reverse, resolve
 from django.core import serializers
+from django.forms import inlineformset_factory
 
 
 def index(request):
@@ -31,6 +32,7 @@ def order_list(request):
     if request.method == 'GET':
         queryset = Order.objects.all()
         context['object_list'] = queryset
+
     return render(request, 'orders_app/order_list.html', context)
 
 
@@ -39,10 +41,32 @@ class OrderDeleteView(DeleteView):
     success_url = reverse_lazy('orders_app:orders')
 
 
-class OrderDetail(DetailView):
-    model = Order
-    # context_object_name = "issue"
-    template_name = "orders_app/order_detail.html"
+# class OrderDetail(DetailView):
+#     model = Order
+#     # context_object_name = "issue"
+#     template_name = "orders_app/order_detail.html"
+
+def order_detail(request, pk):
+    context = {}
+
+    OrderFormSet = inlineformset_factory(
+        Order, OrderedItem, fields=('status',))
+    queryset = Order.objects.get(id=pk)
+    context['order'] = queryset
+
+    if request.method == 'GET':
+
+        formset = OrderFormSet(instance=queryset)
+    if request.method == 'POST':
+        formset = OrderFormSet(request.POST, request.FILES, instance=queryset)
+        if formset.is_valid():
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return HttpResponseRedirect(reverse('orders_app:orders'))
+            # return reverse('orders_app:orders')
+
+    context['formset'] = formset
+    return render(request, 'orders_app/order_detail.html', context)
 
 
 class OrderedItemDetail(DetailView):
