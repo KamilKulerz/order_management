@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Zamówienie szczegol</h2>
+    <h2>Order detail</h2>
     <ul>
         <li>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</li>
         {% for ordereditem in order.ordereditem_set.all %}
             {% include 'orders_app/ordereditem_detail.html' %}    
         {% endfor %}
+        <form method="post">{% csrf_token %}
+            {% for form in formset %}
+            <div>{{ form }}</div>
+            {% endfor %}
+            {{formset.management_form}}
+            <input type="submit" value="Save">
+        </form>
 
         <a href="{% url 'orders_app:add_ordereditem' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
         
