@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Towary</h2>
+    <h2>Items</h2>
     <ul>
         {% for item in object_list %}
             <li>{{ item.name }} | {{ item.price }} | {{ item.category_id }} | {{ item.unit }}</li>
