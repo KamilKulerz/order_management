@@ -4,9 +4,9 @@ from django.db import models
 
 
 class Customer(models.Model):
-    class Meta:
-        verbose_name = 'Klient'
-        verbose_name_plural = 'Klienci'
+    # class Meta:
+    #     verbose_name = 'Klient'
+    #     verbose_name_plural = 'Klienci'
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
 
@@ -15,9 +15,9 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
-    class Meta:
-        verbose_name = 'Zamówienie'
-        verbose_name_plural = 'Zamowienia'
+    # class Meta:
+    #     verbose_name = 'Zamówienie'
+    #     verbose_name_plural = 'Zamowienia'
 
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, blank=False)
@@ -27,9 +27,9 @@ class Order(models.Model):
 
 
 class Category(models.Model):
-    class Meta:
-        verbose_name = 'Kategoria'
-        verbose_name_plural = 'Kategorie'
+    # class Meta:
+    #     verbose_name = 'Kategoria'
+    #     verbose_name_plural = 'Kategorie'
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
 
     def __str__(self):
@@ -37,9 +37,9 @@ class Category(models.Model):
 
 
 class Item(models.Model):
-    class Meta:
-        verbose_name = 'Towar'
-        verbose_name_plural = 'Towary'
+    # class Meta:
+    #     verbose_name = 'Towar'
+    #     verbose_name_plural = 'Towary'
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -51,9 +51,9 @@ class Item(models.Model):
 
 
 class OrderedItem(models.Model):
-    class Meta:
-        verbose_name = 'ZamówionyTowar'
-        verbose_name_plural = 'ZamówioneTowary'
+    # class Meta:
+    #     verbose_name = 'ZamówionyTowar'
+    #     verbose_name_plural = 'ZamówioneTowary'
     # id = models.AutoField(primary_key=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False)
