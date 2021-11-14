@@ -1,21 +1,44 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h2>Order detail</h2>
-    <ul>
-        <li>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</li>
-        {% for ordereditem in order.ordereditem_set.all %}
-            {% include 'orders_app/ordereditem_detail.html' %}    
-        {% endfor %}
+    
+        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</h5>
+
         <form method="post">{% csrf_token %}
-            {% for form in formset %}
-            <div>{{ form }}</div>
+            {% csrf_token %}
+            {% for ordereditem, form in queryset_formset %}
+    
+                <div class="card">
+                    <div class="card-header">
+                        {% include 'orders_app/ordereditem_detail.html' %}
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="row">
+                            <div class="col-4">
+                              {{ form.status|as_crispy_field }}
+                            </div>
+                            <div class="col-4">
+                              {{ form.quantity|as_crispy_field }}
+                            </div>
+                            <div class="col-4">
+                              {{ form.DELETE|as_crispy_field }}
+                            </div>
+                            
+                              {{ form.id}}
+                            
+                          </div>
+                    </div>
+
+                </div>
             {% endfor %}
             {{formset.management_form}}
-            <input type="submit" value="Save">
+            <input class="btn btn-warning" type="submit" value="Save">
         </form>
 
         <a href="{% url 'orders_app:add_ordereditem' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
         
-    </ul>
+    
 {% endblock %}
