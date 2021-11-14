@@ -1,6 +1,18 @@
 from django.db import models
 
 # Create your models here.
+ORDER_STATUSES = [
+    ('nok', 'Not started'),
+    ('ong', 'Ongoing'),
+    ('pkd', 'Packed'),
+    ('shp', 'Shipped'),
+]
+ITEM_STATUSES = [
+    ('nok', 'Not started'),
+    ('pro', 'Produces'),
+    ('ass', 'Assembled'),
+    ('pkd', 'Packed'),
+]
 
 
 class Customer(models.Model):
@@ -20,7 +32,8 @@ class Order(models.Model):
     #     verbose_name_plural = 'Zamowienia'
 
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, blank=False)
+    status = models.CharField(
+        max_length=50, blank=False, choices=ORDER_STATUSES)
 
     def __str__(self):
         return str(self.id)
@@ -58,7 +71,8 @@ class OrderedItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False)
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, blank=False, default='nok')
+    status = models.CharField(
+        max_length=50, blank=False, default='nok', choices=ITEM_STATUSES)
 
     # def __str__(self):
     #     return self.oiid
