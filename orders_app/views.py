@@ -49,23 +49,26 @@ class OrderDeleteView(DeleteView):
 def order_detail(request, pk):
     context = {}
 
-    OrderFormSet = inlineformset_factory(
-        Order, OrderedItem, fields=('status',))
     queryset = Order.objects.get(id=pk)
+    OrderFormSet = inlineformset_factory(
+        Order, OrderedItem, fields=('status', 'quantity'), extra=0)
     context['order'] = queryset
 
     if request.method == 'GET':
-
         formset = OrderFormSet(instance=queryset)
+
     if request.method == 'POST':
         formset = OrderFormSet(request.POST, request.FILES, instance=queryset)
         if formset.is_valid():
             formset.save()
-            # Do something. Should generally end with a redirect. For example:
-            return HttpResponseRedirect(reverse('orders_app:orders'))
-            # return reverse('orders_app:orders')
+            return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
+        else:
+            # TODO add wrond form handling
+            print(formset.errors)
 
     context['formset'] = formset
+    context['queryset_formset'] = zip(
+        list(queryset.ordereditem_set.all()), list(formset))
     return render(request, 'orders_app/order_detail.html', context)
 
 
@@ -112,7 +115,7 @@ class OrderedItemCreateView(CreateView):
 
     def get_success_url(self):  # new
         # return resolve(f'/orders/{self.request.GET["order_id"]}')
-        return reverse('orders_app:orders')
+        return reverse('orders_app:order', kwargs={'pk': self.request.GET["order_id"]})
 
     def form_valid(self, form):
         #!!!!!!!!!!!!!!!!!!!!!!!
