@@ -4,8 +4,19 @@
     <h2>Items</h2>
     <ul>
         {% for item in object_list %}
-            <li>{{ item.name }} | {{ item.price }} | {{ item.category_id }} | {{ item.unit }}</li>
+            <div class="card m-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">Name: {{ item.name }}</div>
+                        <div class="col-3">Price: {{ item.price }}</div>
+                        <div class="col-3">Category: {{ item.category_id }}</div>
+                        <div class="col-3">Unit: {{ item.unit }}</div>
+                    </div>
+                    
+                </div>
+
+            </div>
         {% endfor %}
     </ul>
-    <a href="{% url 'orders_app:add_items' %}">add item</a>    
+    <a href="{% url 'orders_app:add_items' %}" class="btn btn-info" role="button">add item</a>    
 {% endblock %}

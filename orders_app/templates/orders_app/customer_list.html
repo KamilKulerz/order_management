@@ -4,9 +4,13 @@
     <h2>Customers</h2>
     <ul>
         {% for customer in object_list %}
-            <li>{{ customer.name }}</li>
+            <div class="card m-3">
+                
+                <div class="card-body">{{ customer.name }}</div>
+
+            </div>
         {% endfor %}
     </ul>
 
-    <a href="{% url 'orders_app:add_customers' %}">add customer</a>    
+    <a href="{% url 'orders_app:add_customers' %}" class="btn btn-info" role="button">add customer</a>    
 {% endblock %}
