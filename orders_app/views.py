@@ -130,3 +130,11 @@ class CustomerCreateView(CreateView):
 
     def get_success_url(self):  # new
         return reverse('orders_app:customers')
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    fields = ['name']
+
+    def get_success_url(self):  # new
+        return reverse('orders_app:categories')
