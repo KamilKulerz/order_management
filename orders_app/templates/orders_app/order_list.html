@@ -4,7 +4,7 @@
     <h2>Orders</h2>
     <ul>
         {% for order in object_list %}
-        <div class="card">
+        <div class="card m-3">
             <div class="card-body">
                 <h5>Order ID:{{ order.id }}</h5>
                 <p>Cust ID: {{order.customer_id}}</p>
@@ -15,7 +15,7 @@
                 <a class="btn btn-primary" id="{{order.id}}" data-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
 
                 <div class="collapse" id="collapse{{order.id}}">
-                    <div class="card card-body">
+                    <div class="card m-3 card-body">
                         {% for ordereditem in order.ordereditem_set.all %}
                             {% include 'orders_app/ordereditem_detail.html' %}    
                         {% endfor %}
@@ -29,5 +29,8 @@
 
         {% endfor %}
     </ul>
-    <a href="{% url 'orders_app:add_orders' %}" class="btn btn-info" role="button">add order</a>    
+    <div class="m-3">
+
+        <a href="{% url 'orders_app:add_orders' %}" class="btn btn-info" role="button">add order</a>    
+    </div>
 {% endblock %}
