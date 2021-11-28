@@ -8,6 +8,8 @@ from orders_app.models import Order, Item, Customer, Category, OrderedItem
 from django.urls import reverse, resolve
 from django.core import serializers
 from django.forms import inlineformset_factory
+from django.contrib import messages
+from .forms import OrderForm
 
 
 def index(request):
@@ -46,29 +48,49 @@ class OrderDeleteView(DeleteView):
 #     # context_object_name = "issue"
 #     template_name = "orders_app/order_detail.html"
 
-def order_detail(request, pk):
-    context = {}
-
-    queryset = Order.objects.get(id=pk)
-    OrderFormSet = inlineformset_factory(
-        Order, OrderedItem, fields=('status', 'quantity'), extra=0)
-    context['order'] = queryset
-
-    if request.method == 'GET':
-        formset = OrderFormSet(instance=queryset)
-
+def order_detail_update(request, pk):
     if request.method == 'POST':
+        queryset = Order.objects.get(id=pk)
+        OrderFormSet = inlineformset_factory(
+            Order, OrderedItem, fields=('status', 'quantity'), extra=0)
         formset = OrderFormSet(request.POST, request.FILES, instance=queryset)
         if formset.is_valid():
             formset.save()
-            return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
+            messages.info(request, 'Order saved succesfully!')
         else:
             # TODO add wrond form handling
             print(formset.errors)
+        return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
 
-    context['formset'] = formset
-    context['queryset_formset'] = zip(
-        list(queryset.ordereditem_set.all()), list(formset))
+
+def order_update(request, pk):
+    queryset = Order.objects.get(id=pk)
+    if request.method == 'POST':
+        order_form = OrderForm(request.POST, request.FILES, instance=queryset)
+        if order_form.is_valid():
+            order_form.save()
+            messages.info(request, 'Order updated!')
+        else:
+            print(order_form.errors)
+        return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
+
+
+def order_detail(request, pk):
+    context = {}
+
+    if request.method == 'GET':
+
+        queryset = Order.objects.get(id=pk)
+        OrderFormSet = inlineformset_factory(
+            Order, OrderedItem, fields=('status', 'quantity'), extra=0)
+        order_form = OrderForm(instance=queryset)
+        formset = OrderFormSet(instance=queryset)
+
+        context['order'] = queryset
+        context['formset'] = formset
+        context['order_form'] = order_form
+        context['queryset_formset'] = zip(
+            list(queryset.ordereditem_set.all()), list(formset))
     return render(request, 'orders_app/order_detail.html', context)
 
 
