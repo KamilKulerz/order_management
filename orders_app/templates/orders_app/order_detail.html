@@ -5,8 +5,11 @@
     <h2>Order detail</h2>
     
         <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</h5>
+        <form id="order_form" action="{% url 'orders_app:order_update' order.id %} " method="post">{% csrf_token %}
+          {{ order_form | crispy}}
+        </form>
 
-        <form method="post">{% csrf_token %}
+        <form id="order_items_form" action="{% url 'orders_app:order_detail_update' order.id %} " method="post">{% csrf_token %}
             {% csrf_token %}
             {% for ordereditem, form in queryset_formset %}
     
@@ -46,5 +49,6 @@
           <a href="{% url 'orders_app:add_ordereditem' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
         </div>
         
-    
+
+
 {% endblock %}
