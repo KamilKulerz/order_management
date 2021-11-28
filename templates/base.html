@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en">
   <head>
+
+    <style>
+
+      .toast-container{
+        position: absolute;
+        top: 10%;
+        right: 5%;
+
+        
+      }
+
+    </style>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,6 +35,11 @@
 
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+
+
     <title>{% block title %} Order Management {% endblock %}</title>
   </head>
   <body>
@@ -39,7 +57,29 @@
           </div>
       </div>
     
+      {% if messages %}
 
+          {% for message in messages %}
 
+          <div class="toast-container top-0 end-0">
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay=5000>
+            <div class="toast-header">
+
+              <strong class="me-auto">Message</strong>
+            </div>
+            <div class="toast-body">
+              {{ message }}
+            </div>
+          </div>
+          </div>
+          
+          {% endfor %}
+
+      {% endif %}
+      <script>
+        $(document).ready(function(){
+          $('.toast').toast('show');
+        });
+        </script>
   </body>
 </html>
