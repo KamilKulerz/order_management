@@ -1,4 +1,24 @@
-<form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm">
-</form>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    
+    <form method="post">{% csrf_token %}
+        <div class="card-header">
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+        </div>
+        <div class="cad-body m-2">
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-warning">Confirm</button>
+
+                </div>
+                <div class="col-6">
+                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-info float-right">Go back</a>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
