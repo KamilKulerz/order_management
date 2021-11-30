@@ -19,6 +19,13 @@
     {% else %}
         <div class="card-body">
             <h1 align="center">Welcome</h1>
+            <h3 align="center">You have total of {{no_of_orders}} orders</h3>
+            <ul>
+              {% for status in groupped_summary %}
+                <p align="center">{{status.status}}: {{status.status__count}}</p>
+              {% endfor %}
+            </ul>
+
         </div>
     {% endif %}
 </div>
