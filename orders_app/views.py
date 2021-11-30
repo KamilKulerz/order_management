@@ -4,12 +4,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView
-from orders_app.models import Order, Item, Customer, Category, OrderedItem
+from orders_app.models import Order, Item, Customer, Category, OrderedItem, ORDER_STATUSES
 from django.urls import reverse, resolve
 from django.core import serializers
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from .forms import OrderForm
+from django.db.models import Count
 
 
 def index(request):
@@ -19,7 +20,25 @@ def index(request):
 
 
 def home(request):
+    STATUS_COL_NAME = 'status'
     context = {}
+    no_of_orders = Order.objects.all().count()
+    groupped = (Order.objects
+                .values(STATUS_COL_NAME)
+                .annotate(Count(STATUS_COL_NAME))
+                .order_by()
+                )
+
+    order_statuses_reverse = dict((k, v) for k, v in ORDER_STATUSES)
+    for x in groupped:
+        x[STATUS_COL_NAME] = order_statuses_reverse[x[STATUS_COL_NAME]]
+
+    # groupped = [{STATUS_COL_NAME: order_statuses_reverse[x[STATUS_COL_NAME]],
+    #              'status__count': x['status__count']} for x in groupped]
+
+    print(groupped)
+    context['no_of_orders'] = no_of_orders
+    context['groupped_summary'] = groupped
     return render(request, 'orders_app/home.html', context)
 
 
