@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h5>Order ID:{{ order.id }}</h5>
                 <p>Cust ID: {{order.customer_id}}</p>
-                <p>Status: {{order.status}}</p>
+                <p>Status: {{order.get_status_display}}</p>
                 <a href="{% url 'orders_app:order' order.id %}" class="btn btn-info" role="button">details</a>
                 <a href="{% url 'orders_app:delete_order' order.id %}" class="btn btn-info" role="button">delete</a>
                 

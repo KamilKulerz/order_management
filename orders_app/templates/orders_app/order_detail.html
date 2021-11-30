@@ -4,7 +4,7 @@
 {% block content %}
     <h2>Order detail</h2>
     
-        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.status}}</h5>
+        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.get_status_display}}</h5>
         <form id="order_form" action="{% url 'orders_app:order_update' order.id %} " method="post">{% csrf_token %}
           {{ order_form | crispy}}
         </form>
