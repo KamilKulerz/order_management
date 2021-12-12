@@ -15,8 +15,8 @@ def test_item_str(new_item):
     assert str(new_item) == 'test item'
 
 
-def test_category_str(new_category):
-    assert str(new_category) == 'test cat'
+def test_category_str(new_cat):
+    assert str(new_cat) == 'test cat'
 
 
 def test_new_user(new_user):

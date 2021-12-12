@@ -15,7 +15,7 @@ def new_customer(db):
 
 
 @pytest.fixture()
-def new_category(db):
+def new_cat(db):
     cat = Category.objects.create(name='test cat')
     return cat
 
