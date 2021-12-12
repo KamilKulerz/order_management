@@ -33,6 +33,8 @@ def home(request):
     for x in groupped:
         x[STATUS_COL_NAME] = order_statuses_reverse[x[STATUS_COL_NAME]]
 
+    order = Order.objects.all()[0]
+    print(order.get_ordered_items())
     # groupped = [{STATUS_COL_NAME: order_statuses_reverse[x[STATUS_COL_NAME]],
     #              'status__count': x['status__count']} for x in groupped]
 
