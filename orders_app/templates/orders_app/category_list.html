@@ -2,19 +2,32 @@
 
 {% block content %}
     <h2>Categories</h2>
+    <a href="{% url 'orders_app:add_customers' %}" class="btn btn-info" role="button">Add Category</a>    
     <ul>
         {% for category in object_list %}
-        <div class="card m-3">
+            <div class="card m-3">
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-8">
+                            {{ category.name }}
 
-            <div class="card-body">
+                        </div>
+                        <div class="col-2 d-flex justify-content-end">
 
-                Name: {{ category.name }}
+                            <a class="btn btn-info" role="button" href="{{ category.get_update_url }}">Edit</a>
+                        </div>
+                        <div class="col-2 d-flex justify-content-end">
+
+                            <a class="btn btn-danger" role="button" href="{{ category.get_delete_url }}">Delete</a>
+                        </div>
+
+                    </div>    
+                
+                </div>
 
             </div>
-        </div>
         {% endfor %}
     </ul>
-
-    <a href="{% url 'orders_app:add_categories' %}" class="btn btn-info" role="button">add category</a>    
 
 {% endblock %}
