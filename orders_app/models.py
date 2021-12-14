@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls.base import reverse
 
 # Create your models here.
 ORDER_STATUSES = [
@@ -22,6 +23,12 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+    def get_update_url(self):
+        return reverse("orders_app:customers-update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("orders_app:customers-delete", kwargs={"pk": self.pk})
+
 
 class Order(models.Model):
 
@@ -43,6 +50,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_update_url(self):
+        return reverse("orders_app:categories-update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("orders_app:categories-delete", kwargs={"pk": self.pk})
 
 
 class Item(models.Model):
