@@ -1,6 +1,13 @@
 import pytest
 from orders_app.models import Customer, Order, Item, Category
 from django.contrib.auth.models import User
+from rest_framework.test import APIClient
+
+
+@pytest.fixture()
+def new_client():
+    client = APIClient()
+    return client
 
 
 @pytest.fixture()
