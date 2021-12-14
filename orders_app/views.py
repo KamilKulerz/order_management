@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 from orders_app.models import Order, Item, Customer, Category, OrderedItem, ORDER_STATUSES
 from django.urls import reverse, resolve
 from django.core import serializers
@@ -115,41 +115,18 @@ def order_detail(request, pk):
     return render(request, 'orders_app/order_detail.html', context)
 
 
-class OrderedItemDetail(DetailView):
-    model = OrderedItem
-    # context_object_name = "issue"
-    template_name = "orders_app/ordereditem_detail.html"
-
-
-class ItemsList(ListView):
-    model = Item
-    template_name = 'orders_app/item_list.html'
-
-
-class CustomersList(ListView):
-    model = Customer
-    template_name = 'orders_app/customer_list.html'
-
-
-class CategoriesList(ListView):
-    model = Category
-    template_name = 'orders_app/category_list.html'
-
-
-class ItemCreateView(CreateView):
-    model = Item
-    fields = ['name', 'price', 'category_id', 'unit']
-
-    def get_success_url(self):  # new
-        return reverse('orders_app:items')
-
-
 class OrderCreateView(CreateView):
     model = Order
     fields = ['customer_id', 'status']
 
     def get_success_url(self):  # new
         return reverse('orders_app:orders')
+
+
+class OrderedItemDetail(DetailView):
+    model = OrderedItem
+    # context_object_name = "issue"
+    template_name = "orders_app/ordereditem_detail.html"
 
 
 class OrderedItemCreateView(CreateView):
@@ -167,12 +144,40 @@ class OrderedItemCreateView(CreateView):
         return super(OrderedItemCreateView, self).form_valid(form)
 
 
+class ItemsList(ListView):
+    model = Item
+    template_name = 'orders_app/item_list.html'
+
+
+class ItemCreateView(CreateView):
+    model = Item
+    fields = ['name', 'price', 'category', 'unit']
+
+    def get_success_url(self):  # new
+        return reverse('orders_app:items')
+
+
+class CustomersList(ListView):
+    model = Customer
+    template_name = 'orders_app/customer_list.html'
+
+
 class CustomerCreateView(CreateView):
     model = Customer
     fields = ['name']
+    success_url = reverse_lazy('orders_app:customers')
 
-    def get_success_url(self):  # new
-        return reverse('orders_app:customers')
+
+class CustomerUpdateView(UpdateView):
+    model = Customer
+    fields = ['name']
+    success_url = reverse_lazy('orders_app:customers')
+
+
+class CustomerDeleteView(DeleteView):
+    model = Customer
+    fields = ['name']
+    success_url = reverse_lazy('orders_app:customers')
 
 
 class CategoryCreateView(CreateView):
@@ -181,3 +186,20 @@ class CategoryCreateView(CreateView):
 
     def get_success_url(self):  # new
         return reverse('orders_app:categories')
+
+
+class CategoriesList(ListView):
+    model = Category
+    template_name = 'orders_app/category_list.html'
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    fields = ['name']
+    success_url = reverse_lazy('orders_app:categories')
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    fields = ['name']
+    success_url = reverse_lazy('orders_app:categories')
