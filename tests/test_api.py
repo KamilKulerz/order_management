@@ -17,10 +17,8 @@ def test_api_root_get(new_client, new_user):
 
 def test_categories_get(new_client, new_cat, new_user):
 
-    # client.login(username=new_user.username, password=new_user.password)
     new_client.force_authenticate(user=new_user)
     url = f'/api/categories/'
-    # url = reverse('api:categories {new_cat.id}')
     response = new_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert len(response.data) == 1

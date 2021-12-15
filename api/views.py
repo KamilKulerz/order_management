@@ -31,24 +31,3 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('customer')
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-
-# class CategoryDetail(APIView):
-
-#     def get(self, request, pk, format=None):
-#         category = get_object_or_404(Category, pk=pk)
-#         serializer = CategorySerializer(category)
-#         return Response(serializer.data)
-
-#     def put(self, request, pk, format=None):
-#         category = get_object_or_404(Category, pk=pk)
-#         serializer = CategorySerializer(category, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk, format=None):
-#         category = get_object_or_404(Category, pk=pk)
-#         category.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -33,20 +33,10 @@ def home(request):
     for x in groupped:
         x[STATUS_COL_NAME] = order_statuses_reverse[x[STATUS_COL_NAME]]
 
-    order = Order.objects.all()[0]
-    print(order.get_ordered_items())
-    # groupped = [{STATUS_COL_NAME: order_statuses_reverse[x[STATUS_COL_NAME]],
-    #              'status__count': x['status__count']} for x in groupped]
-
-    print(groupped)
     context['no_of_orders'] = no_of_orders
     context['groupped_summary'] = groupped
     return render(request, 'orders_app/home.html', context)
 
-
-# class OrdersList(ListView):
-#     model = Order
-#     template_name = 'orders_app/order_list.html'
 
 def order_list(request):
 
@@ -63,11 +53,6 @@ class OrderDeleteView(DeleteView):
     model = Order
     success_url = reverse_lazy('orders_app:orders')
 
-
-# class OrderDetail(DetailView):
-#     model = Order
-#     # context_object_name = "issue"
-#     template_name = "orders_app/order_detail.html"
 
 def order_detail_update(request, pk):
     if request.method == 'POST':
@@ -134,7 +119,6 @@ class OrderedItemCreateView(CreateView):
     fields = ['item', 'quantity', 'status']
 
     def get_success_url(self):  # new
-        # return resolve(f'/orders/{self.request.GET["order_id"]}')
         return reverse('orders_app:order', kwargs={'pk': self.request.GET["order_id"]})
 
     def form_valid(self, form):

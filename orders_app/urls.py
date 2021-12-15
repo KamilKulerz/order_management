@@ -7,12 +7,10 @@ app_name = 'orders_app'
 urlpatterns = [
     path('', views.home, name='home'),
     path('orders/', views.order_list, name='orders'),
-    # path('orders/', views.OrdersList.as_view(), name='orders'),
     path('orders/<str:pk>', views.order_detail, name='order'),
     path('orders/update_items/<str:pk>',
          views.order_detail_update, name='order_detail_update'),
     path('orders/update/<str:pk>', views.order_update, name='order_update'),
-    #     path('orders/<str:pk>', views.OrderDetail.as_view(), name='order'),
     path('orders/delete/<str:pk>',
          views.OrderDeleteView.as_view(), name='delete_order'),
     path('add_orders/', views.OrderCreateView.as_view(), name='add_orders'),

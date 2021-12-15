@@ -76,6 +76,3 @@ class OrderedItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=50, blank=False, default='nok', choices=ITEM_STATUSES)
-
-    # def __str__(self):
-    #     return self.oiid
