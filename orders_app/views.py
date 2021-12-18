@@ -10,7 +10,6 @@ from django.core import serializers
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from .forms import OrderForm
-from django.db.models import Count
 
 
 def index(request):
@@ -22,12 +21,8 @@ def index(request):
 def home(request):
     STATUS_COL_NAME = 'status'
     context = {}
-    no_of_orders = Order.objects.all().count()
-    groupped = (Order.objects
-                .values(STATUS_COL_NAME)
-                .annotate(Count(STATUS_COL_NAME))
-                .order_by()
-                )
+    no_of_orders = Order.count_orders()
+    groupped = Order.get_groupped_by_status()
 
     order_statuses_reverse = dict((k, v) for k, v in ORDER_STATUSES)
     for x in groupped:
@@ -102,7 +97,7 @@ def order_detail(request, pk):
 
 class OrderCreateView(CreateView):
     model = Order
-    fields = ['customer_id', 'status']
+    fields = ['customer', 'status']
 
     def get_success_url(self):  # new
         return reverse('orders_app:orders')
@@ -123,7 +118,7 @@ class OrderedItemCreateView(CreateView):
 
     def form_valid(self, form):
         #!!!!!!!!!!!!!!!!!!!!!!!
-        form.instance.order_id = Order.objects.get(
+        form.instance.order = Order.objects.get(
             id=self.request.GET['order_id'])
         return super(OrderedItemCreateView, self).form_valid(form)
 
@@ -139,6 +134,18 @@ class ItemCreateView(CreateView):
 
     def get_success_url(self):  # new
         return reverse('orders_app:items')
+
+
+class ItemUpdateView(UpdateView):
+    model = Item
+    fields = ['name', 'price', 'category', 'unit']
+    success_url = reverse_lazy('orders_app:items')
+
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    fields = ['name', 'price', 'category', 'unit']
+    success_url = reverse_lazy('orders_app:items')
 
 
 class CustomersList(ListView):
