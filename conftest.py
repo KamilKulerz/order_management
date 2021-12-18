@@ -2,6 +2,7 @@ import pytest
 from orders_app.models import Customer, Order, Item, Category
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
+import decimal
 
 
 @pytest.fixture()
@@ -28,12 +29,11 @@ def new_cat(db):
 
 
 @pytest.fixture()
-def new_item(db):
-    cat = Category.objects.create(name='test cat')
+def new_item(db, new_cat):
     itm = Item.objects.create(
         name='test item',
         price=10.01,
-        category=cat,
+        category=new_cat,
         unit='szt.'
     )
     return itm
@@ -66,5 +66,21 @@ def new_user_factory(db):
 
 
 @pytest.fixture()
+def new_order_factory(db):
+    def create_order(customer: Customer, status: str):
+        order = Order.objects.create(
+            customer=customer,
+            status=status,
+        )
+        return order
+    return create_order
+
+
+@pytest.fixture()
 def new_user(db, new_user_factory):
     return new_user_factory('test user', 'pass', 'name')
+
+
+@pytest.fixture()
+def new_order(db, new_order_factory, new_customer):
+    return new_order_factory(new_customer, 'nok')
