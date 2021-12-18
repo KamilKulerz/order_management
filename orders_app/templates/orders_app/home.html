@@ -11,9 +11,10 @@
 
 {% csrf_token %}
 <div class="card">
-    {% if user.is_staff %}
+    {% if not user.is_staff %}
         <div class="card-body">
             <h1 align="center">Homepage</h1>
+            <h3 align="center">Your are not staff</h3>
         </div>
         </div>
     {% else %}
