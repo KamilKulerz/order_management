@@ -4,12 +4,12 @@
 {% block content %}
     <h2>Order detail</h2>
     
-        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer_id}} | STATUS: {{order.get_status_display}}</h5>
-        <form id="order_form" action="{% url 'orders_app:order_update' order.id %} " method="post">{% csrf_token %}
+        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer}} | STATUS: {{order.get_status_display}}</h5>
+        <form id="order_form" action="{% url 'orders_app:orders-update' order.id %} " method="post">{% csrf_token %}
           {{ order_form | crispy}}
         </form>
 
-        <form id="order_items_form" action="{% url 'orders_app:order_detail_update' order.id %} " method="post">{% csrf_token %}
+        <form id="order_items_form" action="{% url 'orders_app:order-items-update' order.id %} " method="post">{% csrf_token %}
             {% csrf_token %}
             {% for ordereditem, form in queryset_formset %}
     
@@ -46,7 +46,7 @@
 
         <div class="m-3">
 
-          <a href="{% url 'orders_app:add_ordereditem' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
+          <a href="{% url 'orders_app:ordereditem-add' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
         </div>
         
 

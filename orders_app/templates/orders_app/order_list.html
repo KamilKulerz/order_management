@@ -7,10 +7,10 @@
         <div class="card m-3">
             <div class="card-body">
                 <h5>Order ID:{{ order.id }}</h5>
-                <p>Cust ID: {{order.customer_id}}</p>
+                <p>Cust ID: {{order.customer}}</p>
                 <p>Status: {{order.get_status_display}}</p>
                 <a href="{% url 'orders_app:order' order.id %}" class="btn btn-info" role="button">details</a>
-                <a href="{% url 'orders_app:delete_order' order.id %}" class="btn btn-info" role="button">delete</a>
+                <a href="{% url 'orders_app:orders-delete' order.id %}" class="btn btn-info" role="button">delete</a>
                 
                 <a class="btn btn-primary" id="{{order.id}}" data-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
 
@@ -31,6 +31,6 @@
     </ul>
     <div class="m-3">
 
-        <a href="{% url 'orders_app:add_orders' %}" class="btn btn-info" role="button">add order</a>    
+        <a href="{% url 'orders_app:orders-add' %}" class="btn btn-info" role="button">add order</a>    
     </div>
 {% endblock %}

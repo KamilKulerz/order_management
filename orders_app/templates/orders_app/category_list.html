@@ -2,11 +2,11 @@
 
 {% block content %}
     <h2>Categories</h2>
-    <a href="{% url 'orders_app:add_customers' %}" class="btn btn-info" role="button">Add Category</a>    
+    <a href="{% url 'orders_app:customers-add' %}" class="btn btn-info" role="button">Add Category</a>    
     <ul>
         {% for category in object_list %}
             <div class="card m-3">
-                
+      
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">

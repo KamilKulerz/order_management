@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Customers</h2>
-    <a href="{% url 'orders_app:add_customers' %}" class="btn btn-info" role="button">Add Customer</a>    
+    <a href="{% url 'orders_app:customers-add' %}" class="btn btn-info" role="button">Add Customer</a>    
     <ul>
         {% for customer in object_list %}
             <div class="card m-3">
