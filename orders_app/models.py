@@ -1,7 +1,8 @@
 from django.db import models
 from django.urls.base import reverse
+from django.db.models import Count
 
-# Create your models here.
+
 ORDER_STATUSES = [
     ('nok', 'Not started'),
     ('ong', 'Ongoing'),
@@ -43,6 +44,18 @@ class Order(models.Model):
         items = [x.item for x in self.ordereditem_set.all()]
         return items
 
+    @classmethod
+    def count_orders(cls):
+        return cls.objects.all().count()
+
+    @classmethod
+    def get_groupped_by_status(cls):
+        return (Order.objects
+                .values('status')
+                .annotate(Count('status'))
+                .order_by()
+                )
+
 
 class Category(models.Model):
 
@@ -61,12 +74,18 @@ class Category(models.Model):
 class Item(models.Model):
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.FloatField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     unit = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
         return self.name
+
+    def get_update_url(self):
+        return reverse("orders_app:items-update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("orders_app:items-delete", kwargs={"pk": self.pk})
 
 
 class OrderedItem(models.Model):
