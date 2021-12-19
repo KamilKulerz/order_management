@@ -2,21 +2,52 @@
 
 {% block content %}
     <h2>Items</h2>
+    <a href="{% url 'orders_app:items-add' %}" class="btn btn-info" role="button">Add Item</a>    
     <ul>
+        <div class="card m-3">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-2">Name</div>
+                    <div class="col-2">Price</div>
+                    <div class="col-2">Category</div>
+                    <div class="col-2">Unit</div>
+                    <div class="col-2 d-flex justify-content-end"></div>
+                    <div class="col-2 d-flex justify-content-end"></div>
+                </div>    
+            </div>
+        </div>
+
         {% for item in object_list %}
             <div class="card m-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">Name: {{ item.name }}</div>
-                        <div class="col-3">Price: {{ item.price }}</div>
-                        <div class="col-3">Category: {{ item.category }}</div>
-                        <div class="col-3">Unit: {{ item.unit }}</div>
-                    </div>
-                    
+                        <div class="col-2">
+                            {{ item.name }}
+                        </div>
+                        <div class="col-2">
+                            {{ item.price }}
+                        </div>
+                        <div class="col-2">
+                            {{ item.category }}
+                        </div>
+                        <div class="col-2">
+                            {{ item.unit }}
+                        </div>
+                        <div class="col-2 d-flex justify-content-end">
+
+                            <a class="btn btn-info" role="button" href="{{ item.get_update_url }}">Edit</a>
+                        </div>
+                        <div class="col-2 d-flex justify-content-end">
+
+                            <a class="btn btn-danger" role="button" href="{{ item.get_delete_url }}">Delete</a>
+                        </div>
+
+                    </div>    
+                
                 </div>
 
             </div>
         {% endfor %}
     </ul>
-    <a href="{% url 'orders_app:items-add' %}" class="btn btn-info" role="button">add item</a>    
+
 {% endblock %}
