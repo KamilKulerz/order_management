@@ -10,6 +10,7 @@ from django.core import serializers
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from .forms import OrderForm
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def index(request):
@@ -81,17 +82,19 @@ def order_detail(request, pk):
 
     if request.method == 'GET':
 
-        queryset = Order.objects.get(id=pk)
+        order = Order.objects.get(id=pk)
         OrderFormSet = inlineformset_factory(
             Order, OrderedItem, fields=('status', 'quantity'), extra=0)
-        order_form = OrderForm(instance=queryset)
-        formset = OrderFormSet(instance=queryset)
+        order_form = OrderForm(instance=order)
+        formset = OrderFormSet(instance=order)
 
-        context['order'] = queryset
+        groupped = order.get_groupped_items_count()
+
+        context['order'] = order
         context['formset'] = formset
         context['order_form'] = order_form
-        context['queryset_formset'] = zip(
-            list(queryset.ordereditem_set.all()), list(formset))
+        context['queryset_formset'] = zip(list(order.ordereditem_set.all()), list(formset))
+        context['summary_data'] = list(groupped)
     return render(request, 'orders_app/order_detail.html', context)
 
 
@@ -128,24 +131,27 @@ class ItemsList(ListView):
     template_name = 'orders_app/item_list.html'
 
 
-class ItemCreateView(CreateView):
-    model = Item
-    fields = ['name', 'price', 'category', 'unit']
-
-    def get_success_url(self):  # new
-        return reverse('orders_app:items')
-
-
-class ItemUpdateView(UpdateView):
+class ItemCreateView(SuccessMessageMixin, CreateView):
     model = Item
     fields = ['name', 'price', 'category', 'unit']
     success_url = reverse_lazy('orders_app:items')
+    success_message = 'Created new item!'
+
+
+class ItemUpdateView(SuccessMessageMixin, UpdateView):
+    model = Item
+    fields = ['name', 'price', 'category', 'unit']
+    success_url = reverse_lazy('orders_app:items')
+    success_message = 'Updated item!'
 
 
 class ItemDeleteView(DeleteView):
     model = Item
     fields = ['name', 'price', 'category', 'unit']
-    success_url = reverse_lazy('orders_app:items')
+
+    def get_success_url(self):
+        messages.success(self.request, 'Item deleted!')
+        return reverse_lazy('orders_app:items')
 
 
 class CustomersList(ListView):
@@ -153,30 +159,34 @@ class CustomersList(ListView):
     template_name = 'orders_app/customer_list.html'
 
 
-class CustomerCreateView(CreateView):
+class CustomerCreateView(SuccessMessageMixin, CreateView):
     model = Customer
     fields = ['name']
     success_url = reverse_lazy('orders_app:customers')
+    success_message = 'Customer created!'
 
 
-class CustomerUpdateView(UpdateView):
+class CustomerUpdateView(SuccessMessageMixin, UpdateView):
     model = Customer
     fields = ['name']
     success_url = reverse_lazy('orders_app:customers')
+    success_message = 'Updated customer!'
 
 
 class CustomerDeleteView(DeleteView):
     model = Customer
     fields = ['name']
-    success_url = reverse_lazy('orders_app:customers')
+
+    def get_success_url(self):
+        messages.success(self.request, 'Customer deleted!')
+        return reverse_lazy('orders_app:customers')
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(SuccessMessageMixin, CreateView):
     model = Category
     fields = ['name']
-
-    def get_success_url(self):  # new
-        return reverse('orders_app:categories')
+    success_url = reverse_lazy('orders_app:categories')
+    success_message = 'Category created!'
 
 
 class CategoriesList(ListView):
@@ -184,13 +194,17 @@ class CategoriesList(ListView):
     template_name = 'orders_app/category_list.html'
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(SuccessMessageMixin, UpdateView):
     model = Category
     fields = ['name']
     success_url = reverse_lazy('orders_app:categories')
+    success_message = 'Updated category!'
 
 
 class CategoryDeleteView(DeleteView):
     model = Category
     fields = ['name']
-    success_url = reverse_lazy('orders_app:categories')
+
+    def get_success_url(self):
+        messages.success(self.request, 'Category deleted!')
+        return reverse_lazy('orders_app:categories')
