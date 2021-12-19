@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.aggregates import Sum
 from django.urls.base import reverse
 from django.db.models import Count
 
@@ -55,6 +56,23 @@ class Order(models.Model):
                 .annotate(Count('status'))
                 .order_by()
                 )
+
+    def count_items(self):
+        return OrderedItem.objects.filter(order=self).count()
+
+    def get_groupped_items_count(self):
+        return (OrderedItem.objects
+                .filter(order=self)
+                .values('status')
+                .annotate(Count('status'))
+                .order_by())
+
+    def get_groupped_items_sum(self):
+        return (OrderedItem.objects
+                .filter(order=self)
+                .values('status')
+                .annotate(Sum('quantity'))
+                .order_by())
 
 
 class Category(models.Model):
