@@ -10,7 +10,7 @@
 </script>
 
 {% csrf_token %}
-<div class="card">
+<div class="card shadow">
     {% if not user.is_staff %}
         <div class="card-body">
             <h1 align="center">Homepage</h1>
@@ -32,17 +32,7 @@
 </div>
 
     
-    <form method="POST" enctype="multipart/form-data">
 
-    <div class="input-group">
-
-  </form>
-
-    <div>
-
-        <p>
-        </p>
-    </div>
 
     {% if messages %}
     <ul class="messages">
