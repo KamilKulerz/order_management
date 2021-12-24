@@ -58,7 +58,7 @@ def test_create_order_empty(new_order, new_customer):
     assert len(order_from_db.get_ordered_items()) == 0
 
 
-def test_create_order_with_item(new_order, new_customer, new_item):
+def test_create_order_with_item(new_order, new_item):
     new_ordered_item = OrderedItem.objects.create(
         item=new_item, quantity=10, order=new_order)
 
@@ -66,6 +66,12 @@ def test_create_order_with_item(new_order, new_customer, new_item):
 
     assert len(items) == 1
     assert items[0].name == new_item.name
+
+
+def test_number_of_ordered_items(new_order, new_item):
+    new_ordered_item = OrderedItem.objects.create(
+        item=new_item, quantity=10, order=new_order)
+    assert new_order.count_items() == 1
 
 
 def test_counting_orders(new_order):
