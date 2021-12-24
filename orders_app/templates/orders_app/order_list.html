@@ -4,15 +4,15 @@
     <h2>Orders</h2>
     <ul>
         {% for order in object_list %}
-        <div class="card m-3">
+        <div class="card shadow m-3">
             <div class="card-body">
                 <h5>Order ID:{{ order.id }}</h5>
                 <p>Cust ID: {{order.customer}}</p>
                 <p>Status: {{order.get_status_display}}</p>
                 <a href="{% url 'orders_app:order' order.id %}" class="btn btn-info" role="button">details</a>
-                <a href="{% url 'orders_app:orders-delete' order.id %}" class="btn btn-info" role="button">delete</a>
+                <a href="{% url 'orders_app:orders-delete' order.id %}" class="btn btn-danger" role="button">delete</a>
                 
-                <a class="btn btn-primary" id="{{order.id}}" data-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
+                <a class="btn btn-primary" id="{{order.id}}" data-bs-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
 
                 <div class="collapse" id="collapse{{order.id}}">
                     <div class="card m-3 card-body">
