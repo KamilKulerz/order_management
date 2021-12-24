@@ -4,7 +4,7 @@
     <h2>Customers</h2>
     <a href="{% url 'orders_app:customers-add' %}" class="btn btn-info" role="button">Add Customer</a>    
     <ul>
-        <div class="card m-3">
+        <div class="card shadow m-3">
             <div class="card-header">
                 <div class="row">
                     <div class="col-8">Name</div>
@@ -15,7 +15,7 @@
         </div>
 
         {% for customer in object_list %}
-            <div class="card m-3">
+            <div class="card shadow m-3">
                 
                 <div class="card-body">
                     <div class="row">

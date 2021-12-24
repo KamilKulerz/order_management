@@ -20,7 +20,7 @@
           {{ order_form | crispy}}
         </form>
 
-        <div class="card">
+        <div class="card shadow">
           <div class="main-bar"></div>
         </div>
 
@@ -28,7 +28,7 @@
             {% csrf_token %}
             {% for ordereditem, form in queryset_formset %}
     
-                <div class="card m-3">
+                <div class="card shadow m-3">
                     <div class="card-header">
                         {% include 'orders_app/ordereditem_detail.html' %}
                     </div>
