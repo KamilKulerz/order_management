@@ -50,7 +50,7 @@ class OrderDeleteView(DeleteView):
     success_url = reverse_lazy('orders_app:orders')
 
 
-def order_detail_update(request, pk):
+def order_detail_update(request, pk: str):
     if request.method == 'POST':
         queryset = Order.objects.get(id=pk)
         OrderFormSet = inlineformset_factory(
@@ -65,7 +65,7 @@ def order_detail_update(request, pk):
         return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
 
 
-def order_update(request, pk):
+def order_update(request, pk: str):
     queryset = Order.objects.get(id=pk)
     if request.method == 'POST':
         order_form = OrderForm(request.POST, request.FILES, instance=queryset)
@@ -77,7 +77,7 @@ def order_update(request, pk):
         return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
 
 
-def order_detail(request, pk):
+def order_detail(request, pk: str):
     context = {}
 
     if request.method == 'GET':
