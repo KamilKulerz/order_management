@@ -1,3 +1,3 @@
-coverage run -m pytest
+coverage run --branch -m pytest
 coverage report
 coverage html
