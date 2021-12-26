@@ -1,0 +1,17 @@
+#list containers
+docker ps
+
+#go inside
+docker exec -t /id/ bash
+
+#build
+docker-compose build /name/
+
+#run
+docker-compose up
+
+#run pgadmin
+docker run -p 5555:80 --name pgadmin -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" -e PGADMIN_DEFAULT_PASSWORD="pass" dpage/pgadmin4
+
+#hostname to connect to db from pgadmin container
+host.docker.internal
