@@ -2,6 +2,8 @@ import pytest
 from rest_framework import status
 from django.test.client import Client
 
+from orders_app.models import ORDER_STATUSES
+
 
 def test_home_view(new_client, new_order):
 
@@ -10,6 +12,22 @@ def test_home_view(new_client, new_order):
     assert response.status_code == status.HTTP_200_OK
     assert response.context['no_of_orders'] == 1
     assert len(response.context['groupped_summary']) == 1
+
+
+def test_order_detail_view(new_client, new_cat, new_order, new_item_factory, ordereditem_factory):
+    it1 = new_item_factory('test1', 15.5, new_cat, 'szt.')
+    it2 = new_item_factory('test2', 15.5, new_cat, 'szt.')
+    ordereditem_factory(it1, 10, new_order, ORDER_STATUSES[0][0])
+    ordereditem_factory(it2, 10, new_order, ORDER_STATUSES[0][0])
+
+    url = f'/orders/{new_order.id}'
+    response = new_client.get(url)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.context['order'].id == 1
+    assert len(list(response.context['formset'])) == 2
+    assert 'status' in response.context['order_form'].fields.keys()
+    assert response.context['summary_data'] == [{'status': 'nok', 'status__count': 2}]
 
 
 @pytest.mark.parametrize("url", [
