@@ -1,11 +1,11 @@
 .my-footer {
-  background-color: #daebff;
+  /* background-color: #daebff; */
   height: 100%;
-  border-top: 3px solid #acc9ec;
+  /* border-top: 3px solid #acc9ec; */
 }
 
 .my-footer > p {
-  color: #74a4db;
+  color: #ffffff;
   display: flex;
   justify-content: end;
   padding-right: 4rem;
