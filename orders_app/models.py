@@ -34,7 +34,7 @@ class Customer(models.Model):
 
 class Order(models.Model):
 
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     status = models.CharField(
         max_length=50, blank=False, choices=ORDER_STATUSES)
 
@@ -93,7 +93,7 @@ class Item(models.Model):
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
     price = models.FloatField(blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     unit = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
