@@ -2,24 +2,73 @@
 
 {% block content %}
     <h2>Orders</h2>
+    <div class="m-3">
+
+        <a href="{% url 'orders_app:orders-add' %}" class="btn btn-info" role="button">Add Order</a>    
+    </div>
     <ul>
+        <div class="card shadow m-3">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">ID</div>
+                    <div class="col">Customer</div>
+                    <div class="col">Status</div>
+                    <div class="col d-flex justify-content-end"></div>
+                    <div class="col d-flex justify-content-end"></div>
+                    <div class="col d-flex justify-content-end"></div>
+                </div>    
+            </div>
+        </div>
+
         {% for order in object_list %}
         <div class="card shadow m-3">
             <div class="card-body">
-                <h5>Order ID:{{ order.id }}</h5>
-                <p>Cust ID: {{order.customer}}</p>
-                <p>Status: {{order.get_status_display}}</p>
-                <a href="{% url 'orders_app:order' order.id %}" class="btn btn-info" role="button">details</a>
-                <a href="{% url 'orders_app:orders-delete' order.id %}" class="btn btn-danger" role="button">delete</a>
+                <div class="row">
+                    <div class="col">
+                        <p>{{ order.id }}</p>
+
+                    </div>
+                    <div class="col">
+                        <p>{{order.customer}}</p>
+
+                    </div>
+                    <div class="col">
+                        <p>{{order.get_status_display}}</p>
+
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="{% url 'orders_app:order' order.id %}" class="btn btn-info" role="button">details</a>
+
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="{% url 'orders_app:orders-delete' order.id %}" class="btn btn-danger" role="button">delete</a>
+
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        
+                        <a class="btn btn-primary" id="{{order.id}}" data-bs-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
+                    </div>
+                </div>
                 
-                <a class="btn btn-primary" id="{{order.id}}" data-bs-toggle="collapse" href="#collapse{{order.id}}" role="button" aria-expanded="false" aria-multiselectable="true" aria-controls="collapseExample">Expand</a>
 
                 <div class="collapse" id="collapse{{order.id}}">
-                    <div class="card m-3 card-body">
-                        {% for ordereditem in order.ordereditem_set.all %}
-                            {% include 'orders_app/ordereditem_detail.html' %}    
-                        {% endfor %}
-                    </div>
+
+                        
+                            <div class="card shadow mt-3">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col">Name</div>
+                                        <div class="col">Price</div>
+                                        <div class="col">Category</div>
+                                        <div class="col">Unit</div>
+                                    </div>    
+                                </div>
+                            </div>
+                            {% for ordereditem in order.ordereditem_set.all %}
+                                {% include 'orders_app/ordereditem_detail_list.html' %}    
+                            {% endfor %}
+                        
+
                 </div>
                 
                 
@@ -29,8 +78,5 @@
 
         {% endfor %}
     </ul>
-    <div class="m-3">
 
-        <a href="{% url 'orders_app:orders-add' %}" class="btn btn-info" role="button">add order</a>    
-    </div>
 {% endblock %}
