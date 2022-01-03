@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from orders_app.models import Category, Customer, Item, Order, OrderedItem
+from orders_app.models import ORDER_STATUSES, Category, Customer, Item, Order, OrderedItem
 
 
 @pytest.mark.django_db
@@ -87,6 +87,34 @@ def test_groupping_orders(new_order_factory, new_customer):
     assert len(groupped) == 2
     assert groupped.get(status='nok')['status__count'] == 2
     assert groupped.get(status='pkd')['status__count'] == 1
+
+
+def test_get_groupped_items_count(new_order, new_item_factory, new_cat, ordereditem_factory):
+    item1 = new_item_factory('t1', 1, new_cat, 'szt.')
+    item2 = new_item_factory('t2', 1, new_cat, 'szt.')
+    item3 = new_item_factory('t3', 1, new_cat, 'szt.')
+
+    ordereditem_factory(item1, 10, new_order, ORDER_STATUSES[0][0])
+    ordereditem_factory(item2, 15, new_order, ORDER_STATUSES[1][0])
+    ordereditem_factory(item3, 20, new_order, ORDER_STATUSES[2][0])
+
+    assert list(new_order.get_groupped_items_count()) == [{'status': 'nok', 'status__count': 1},
+                                                          {'status': 'ong', 'status__count': 1},
+                                                          {'status': 'pkd', 'status__count': 1}]
+
+
+def test_get_groupped_items_sum(new_order, new_item_factory, new_cat, ordereditem_factory):
+    item1 = new_item_factory('t1', 1, new_cat, 'szt.')
+    item2 = new_item_factory('t2', 1, new_cat, 'szt.')
+    item3 = new_item_factory('t3', 1, new_cat, 'szt.')
+
+    ordereditem_factory(item1, 10, new_order, ORDER_STATUSES[0][0])
+    ordereditem_factory(item2, 15, new_order, ORDER_STATUSES[1][0])
+    ordereditem_factory(item3, 20, new_order, ORDER_STATUSES[2][0])
+
+    assert list(new_order.get_groupped_items_sum()) == [{'status': 'nok', 'quantity__sum': 10},
+                                                        {'status': 'ong', 'quantity__sum': 15},
+                                                        {'status': 'pkd', 'quantity__sum': 20}]
 
 
 def test_item_update_url(new_item):
