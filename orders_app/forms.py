@@ -6,7 +6,7 @@ from .models import Order, ORDER_STATUSES
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['status']
+        fields = ('status',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
