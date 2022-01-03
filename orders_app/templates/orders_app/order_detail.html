@@ -6,19 +6,24 @@
 
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'orders_app/css/order_detail.css' %}">
-  
-    {{summary_data|json_script:"groupped-count"}}
+<link rel="stylesheet" href="{% static 'orders_app/css/order_detail.css' %}">
+
+{{summary_data|json_script:"groupped-count"}}
 
 
 
-    <h2>Order detail</h2>
+<h2>Order detail</h2>
 
 
-        <h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer}} | STATUS: {{order.get_status_display}}</h5>
-        <form id="order_form" action="{% url 'orders_app:orders-update' order.id %} " method="post">{% csrf_token %}
-          {{ order_form | crispy}}
-        </form>
+
+<h5>ID: {{ order.id }} | CUSTOMER ID: {{order.customer}} | STATUS: {{order.get_status_display}}</h5>
+<form id="order_form" action="{% url 'orders_app:orders-update' order.id %} " method="post">{% csrf_token %}
+  {{ order_form | crispy}}
+</form>
+<div class="m-3">
+
+  <a href="{% url 'orders_app:ordereditem-add' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
+</div>
 
         <div class="card shadow">
           <div class="main-bar"></div>
@@ -58,11 +63,6 @@
               <input class="btn btn-warning" type="submit" value="Save">
             </div>
         </form>
-
-        <div class="m-3">
-
-          <a href="{% url 'orders_app:ordereditem-add' %}?order_id={{order.id}}" class="btn btn-info" role="button">add item</a>    
-        </div>
         
 
   <script type="text/javascript" src="{% static 'orders_app/js/order_detail.js' %}"></script>
