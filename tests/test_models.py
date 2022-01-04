@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from orders_app.models import ORDER_STATUSES, Category, Customer, Item, Order, OrderedItem
+from orders_app.models import Category, Customer, Item, Order, OrderedItem
 
 
 @pytest.mark.django_db
@@ -94,9 +94,9 @@ def test_get_groupped_items_count(new_order, new_item_factory, new_cat, orderedi
     item2 = new_item_factory('t2', 1, new_cat, 'szt.')
     item3 = new_item_factory('t3', 1, new_cat, 'szt.')
 
-    ordereditem_factory(item1, 10, new_order, ORDER_STATUSES[0][0])
-    ordereditem_factory(item2, 15, new_order, ORDER_STATUSES[1][0])
-    ordereditem_factory(item3, 20, new_order, ORDER_STATUSES[2][0])
+    ordereditem_factory(item1, 10, new_order, Order.ORDER_STATUSES[0][0])
+    ordereditem_factory(item2, 15, new_order, Order.ORDER_STATUSES[1][0])
+    ordereditem_factory(item3, 20, new_order, Order.ORDER_STATUSES[2][0])
 
     assert list(new_order.get_groupped_items_count()) == [{'status': 'nok', 'status__count': 1},
                                                           {'status': 'ong', 'status__count': 1},
@@ -108,9 +108,9 @@ def test_get_groupped_items_sum(new_order, new_item_factory, new_cat, orderedite
     item2 = new_item_factory('t2', 1, new_cat, 'szt.')
     item3 = new_item_factory('t3', 1, new_cat, 'szt.')
 
-    ordereditem_factory(item1, 10, new_order, ORDER_STATUSES[0][0])
-    ordereditem_factory(item2, 15, new_order, ORDER_STATUSES[1][0])
-    ordereditem_factory(item3, 20, new_order, ORDER_STATUSES[2][0])
+    ordereditem_factory(item1, 10, new_order, Order.ORDER_STATUSES[0][0])
+    ordereditem_factory(item2, 15, new_order, Order.ORDER_STATUSES[1][0])
+    ordereditem_factory(item3, 20, new_order, Order.ORDER_STATUSES[2][0])
 
     assert list(new_order.get_groupped_items_sum()) == [{'status': 'nok', 'quantity__sum': 10},
                                                         {'status': 'ong', 'quantity__sum': 15},
@@ -139,3 +139,13 @@ def test_customer_update_url(new_customer):
 
 def test_customer_delete_url(new_customer):
     assert new_customer.get_delete_url() == f'/customers/{new_customer.id}/delete'
+
+
+def test_delete_cat_with_item_assigned(new_cat, new_item):
+    new_cat.delete()
+    assert new_item.category.id is None
+
+
+def test_delete_customer_with_existing_orders(new_order, new_customer):
+    new_customer.delete()
+    assert new_order.customer.id is None
