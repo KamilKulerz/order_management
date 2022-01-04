@@ -4,20 +4,6 @@ from django.urls.base import reverse
 from django.db.models import Count
 
 
-ORDER_STATUSES = [
-    ('nok', 'Not started'),
-    ('ong', 'Ongoing'),
-    ('pkd', 'Packed'),
-    ('shp', 'Shipped'),
-]
-ITEM_STATUSES = [
-    ('nok', 'Not started'),
-    ('pro', 'Produces'),
-    ('ass', 'Assembled'),
-    ('pkd', 'Packed'),
-]
-
-
 class Customer(models.Model):
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
@@ -33,6 +19,12 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
+    ORDER_STATUSES = [
+        ('nok', 'Not started'),
+        ('ong', 'Ongoing'),
+        ('pkd', 'Packed'),
+        ('shp', 'Shipped'),
+    ]
 
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     status = models.CharField(
@@ -107,6 +99,12 @@ class Item(models.Model):
 
 
 class OrderedItem(models.Model):
+    ITEM_STATUSES = [
+        ('nok', 'Not started'),
+        ('pro', 'Produces'),
+        ('ass', 'Assembled'),
+        ('pkd', 'Packed'),
+    ]
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False)

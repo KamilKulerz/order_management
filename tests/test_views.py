@@ -2,7 +2,7 @@ import pytest
 from rest_framework import status
 from django.test.client import Client
 
-from orders_app.models import ORDER_STATUSES
+from orders_app.models import Order
 
 
 def test_home_view(new_client, new_order):
@@ -17,8 +17,8 @@ def test_home_view(new_client, new_order):
 def test_order_detail_view(new_client, new_cat, new_order, new_item_factory, ordereditem_factory):
     it1 = new_item_factory('test1', 15.5, new_cat, 'szt.')
     it2 = new_item_factory('test2', 15.5, new_cat, 'szt.')
-    ordereditem_factory(it1, 10, new_order, ORDER_STATUSES[0][0])
-    ordereditem_factory(it2, 10, new_order, ORDER_STATUSES[0][0])
+    ordereditem_factory(it1, 10, new_order, Order.ORDER_STATUSES[0][0])
+    ordereditem_factory(it2, 10, new_order, Order.ORDER_STATUSES[0][0])
 
     url = f'/orders/{new_order.id}'
     response = new_client.get(url)
