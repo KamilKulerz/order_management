@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from django.views.generic.edit import DeleteView, UpdateView
-from orders_app.models import Order, Item, Customer, Category, OrderedItem, ORDER_STATUSES
+from orders_app.models import Order, Item, Customer, Category, OrderedItem
 from django.urls import reverse, resolve
 from django.core import serializers
 from django.forms import inlineformset_factory
@@ -24,8 +24,7 @@ def home(request):
     context = {}
     no_of_orders = Order.count_orders()
     groupped = Order.get_groupped_by_status()
-
-    order_statuses_reverse = dict((k, v) for k, v in ORDER_STATUSES)
+    order_statuses_reverse = dict((k, v) for k, v in Order.ORDER_STATUSES)
     for x in groupped:
         x[STATUS_COL_NAME] = order_statuses_reverse[x[STATUS_COL_NAME]]
 
@@ -185,7 +184,15 @@ class CustomerDeleteView(DeleteView):
 class CategoryCreateView(SuccessMessageMixin, CreateView):
     model = Category
     fields = ['name']
-    success_url = reverse_lazy('orders_app:categories')
+
+    def get_success_url(self) -> str:
+        next_url = self.request.GET.get('next', None)
+        if next_url:
+            success_url = next_url
+        else:
+            success_url = reverse_lazy('orders_app:categories')
+        return success_url
+
     success_message = 'Category created!'
 
 
