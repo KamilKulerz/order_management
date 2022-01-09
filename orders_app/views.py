@@ -3,10 +3,11 @@ from typing import Any, Dict, Type
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models.query import QuerySet
+from django.db.utils import IntegrityError
 from django.forms import inlineformset_factory
 from django.forms.models import BaseInlineFormSet
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.urls.base import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
@@ -131,14 +132,23 @@ class OrderedItemDetail(DetailView):
 class OrderedItemCreateView(CreateView):
     model = OrderedItem
     fields = ['item', 'quantity', 'status']
+    # form_class = OrderedItemForOrderForm
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+        except IntegrityError:
+            messages.add_message(request, messages.ERROR,
+                                 'This item is already present in the order ' +
+                                 'If you want to change quantity, edit existing item')
+            return redirect(reverse('orders_app:order', kwargs={'pk': self.request.GET["order_id"]}))
 
     def get_success_url(self):  # new
         return reverse('orders_app:order', kwargs={'pk': self.request.GET["order_id"]})
 
     def form_valid(self, form):
         #!!!!!!!!!!!!!!!!!!!!!!!
-        form.instance.order = Order.objects.get(
-            id=self.request.GET['order_id'])
+        form.instance.order = Order.objects.get(id=self.request.GET['order_id'])
         return super(OrderedItemCreateView, self).form_valid(form)
 
 
