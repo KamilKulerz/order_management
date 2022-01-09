@@ -1,27 +1,31 @@
-from django.http.response import JsonResponse
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls.base import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView
-from django.views.generic.edit import DeleteView, UpdateView
-from orders_app.models import Order, Item, Customer, Category, OrderedItem
-from django.urls import reverse, resolve
-from django.core import serializers
-from django.forms import inlineformset_factory
+from typing import Any, Dict, Type
+
 from django.contrib import messages
-from .forms import OrderForm
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models.query import QuerySet
+from django.forms import inlineformset_factory
+from django.forms.models import BaseInlineFormSet
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.urls.base import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic.edit import DeleteView, UpdateView
+from django_stubs_ext.aliases import ValuesQuerySet
+
+from orders_app.models import Category, Customer, Item, Order, OrderedItem
+
+from .forms import OrderForm
 
 
-def index(request):
+def home(request) -> HttpResponse:
+    no_of_orders: int
+    groupped: ValuesQuerySet[Order, dict]
+    order_statuses_reverse: dict
 
-    html = "<html><body>It is now </body></html>"
-    return HttpResponse(html)
+    context: Dict[str, Any] = {}
+    STATUS_COL_NAME: str = 'status'
 
-
-def home(request):
-    STATUS_COL_NAME = 'status'
-    context = {}
     no_of_orders = Order.count_orders()
     groupped = Order.get_groupped_by_status()
     order_statuses_reverse = dict((k, v) for k, v in Order.ORDER_STATUSES)
@@ -33,9 +37,10 @@ def home(request):
     return render(request, 'orders_app/home.html', context)
 
 
-def order_list(request):
+def order_list(request) -> HttpResponse:
+    queryset: QuerySet[Order]
 
-    context = {}
+    context: Dict[str, Any] = {}
 
     if request.method == 'GET':
         queryset = Order.objects.all()
@@ -49,7 +54,11 @@ class OrderDeleteView(DeleteView):
     success_url = reverse_lazy('orders_app:orders')
 
 
-def order_detail_update(request, pk: str):
+def order_detail_update(request, pk: str) -> HttpResponseRedirect:
+    queryset: Order
+    OrderFormSet: Type[BaseInlineFormSet]
+    formset: BaseInlineFormSet
+
     if request.method == 'POST':
         queryset = Order.objects.get(id=pk)
         OrderFormSet = inlineformset_factory(
@@ -61,10 +70,13 @@ def order_detail_update(request, pk: str):
         else:
             # TODO add wrond form handling
             print(formset.errors)
-        return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
+    return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
 
 
 def order_update(request, pk: str):
+    queryset: Order
+    order_form: OrderForm
+
     queryset = Order.objects.get(id=pk)
     if request.method == 'POST':
         order_form = OrderForm(request.POST, request.FILES, instance=queryset)
@@ -76,10 +88,15 @@ def order_update(request, pk: str):
         return HttpResponseRedirect(reverse('orders_app:order', kwargs={'pk': pk}))
 
 
-def order_detail(request, pk: str):
-    context = {}
+def order_detail(request, pk: str) -> HttpResponse:
+    context: Dict[str, Any] = {}
 
     if request.method == 'GET':
+        order: Order
+        OrderFormSet: Type[BaseInlineFormSet]
+        order_form: OrderForm
+        formset: BaseInlineFormSet
+        groupped: ValuesQuerySet[OrderedItem, dict]
 
         order = Order.objects.get(id=pk)
         OrderFormSet = inlineformset_factory(
@@ -186,7 +203,8 @@ class CategoryCreateView(SuccessMessageMixin, CreateView):
     fields = ['name']
 
     def get_success_url(self) -> str:
-        next_url = self.request.GET.get('next', None)
+        success_url: str
+        next_url: str | None = self.request.GET.get('next', None)
         if next_url:
             success_url = next_url
         else:
