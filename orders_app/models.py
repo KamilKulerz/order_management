@@ -9,6 +9,7 @@ from django_stubs_ext.aliases import ValuesQuerySet
 class Customer(models.Model):
 
     name = models.CharField(max_length=50, blank=False, verbose_name="Name")
+    # email = models.EmailField(blank=False)
 
     def __str__(self):
         return self.name
@@ -107,6 +108,11 @@ class OrderedItem(models.Model):
         ('ass', 'Assembled'),
         ('pkd', 'Packed'),
     ]
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['item', 'order'], name='unique item for order')
+        ]
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False)
