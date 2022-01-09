@@ -15,3 +15,7 @@ docker run -p 5555:80 --name pgadmin -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" 
 
 #hostname to connect to db from pgadmin container
 host.docker.internal
+
+
+$var = import-csv .\customer.csv | ConvertTo-Json
+$var | Add-Content -Path "customer.json"
