@@ -1,8 +1,9 @@
-import pytest
-from orders_app.models import Customer, Order, Item, Category, OrderedItem
-from django.contrib.auth.models import User
-from rest_framework.test import APIClient
 import decimal
+
+import pytest
+from django.contrib.auth.models import User
+from orders_app.models import Category, Customer, Item, Order, OrderedItem
+from rest_framework.test import APIClient
 
 
 @pytest.fixture()

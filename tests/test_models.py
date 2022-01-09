@@ -1,6 +1,5 @@
 import pytest
 from django.contrib.auth.models import User
-
 from orders_app.models import Category, Customer, Item, Order, OrderedItem
 
 

@@ -1,8 +1,7 @@
 import pytest
-from rest_framework import status
 from django.test.client import Client
-
 from orders_app.models import Order
+from rest_framework import status
 
 
 def test_home_view(new_client, new_order):

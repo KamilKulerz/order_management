@@ -1,10 +1,9 @@
 import pytest
-from rest_framework import response
 from api.views import CategoryViewSet
-from rest_framework.test import APIRequestFactory, APIClient
-from rest_framework import status
 from django.urls import reverse
 from orders_app.models import Category
+from rest_framework import response, status
+from rest_framework.test import APIClient, APIRequestFactory
 
 
 def test_api_root_get(new_client, new_user):
