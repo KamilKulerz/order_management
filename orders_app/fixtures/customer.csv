@@ -1,0 +1,7 @@
+model,pk,name
+orders_app.customer,1,test_customer_1
+orders_app.customer,2,test_customer_2
+orders_app.customer,3,test_customer_3
+orders_app.customer,4,test_customer_4
+orders_app.customer,5,test_customer_5
+orders_app.customer,6,test_customer_6
