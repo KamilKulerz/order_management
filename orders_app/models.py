@@ -2,8 +2,11 @@ from typing import Any
 from django.db import models
 from django.db.models import Count
 from django.db.models.aggregates import Sum
+from django.db.models.query_utils import Q
 from django.urls.base import reverse
 from django_stubs_ext.aliases import ValuesQuerySet
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 class Customer(models.Model):
@@ -41,6 +44,15 @@ class Item(models.Model):
     price = models.FloatField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     unit = models.CharField(max_length=50, blank=False)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=Q(price__gte=0), name='price > 0')
+        ]
+
+    def clean(self):
+        if self.price < 0:
+            raise ValidationError({'price': _('Price must be greater than 0')})
 
     def __str__(self):
         return self.name
@@ -109,13 +121,18 @@ class OrderedItem(models.Model):
         ('pkd', 'Packed'),
     ]
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['item', 'order'], name='unique item for order')
-        ]
-
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=50, blank=False, default='nok', choices=ITEM_STATUSES)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['item', 'order'], name='unique item for order'),
+            models.CheckConstraint(check=Q(quantity__gte=0), name='qty > 0')
+        ]
+
+    def clean(self):
+        if self.quantity < 0:
+            raise ValidationError({'quantity': _('Quantity must be greater than 0')})
