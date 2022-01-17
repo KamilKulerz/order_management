@@ -1,4 +1,5 @@
 import decimal
+import os
 
 import pytest
 from django.contrib.auth.models import User
@@ -105,3 +106,13 @@ def new_user(db, new_user_factory):
 @pytest.fixture()
 def new_order(db, new_order_factory, new_customer):
     return new_order_factory(new_customer, 'nok')
+
+
+@pytest.fixture
+def new_file():
+
+    name = 'test_file.txt'
+    with open(name, 'w+') as f:
+        f.write('abcdef')
+    yield name
+    os.remove(name)
