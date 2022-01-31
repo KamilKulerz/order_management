@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 
 class Customer(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=50, blank=False, verbose_name=_("Name"))
     # email = models.EmailField(blank=False)
 
     def __str__(self):
@@ -26,7 +26,7 @@ class Customer(models.Model):
 
 class Category(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, verbose_name="Name")
+    name = models.CharField(max_length=50, blank=False, verbose_name=_("Name"))
 
     def __str__(self):
         return self.name
@@ -40,10 +40,10 @@ class Category(models.Model):
 
 class Item(models.Model):
 
-    name = models.CharField(max_length=50, blank=False, verbose_name="Name")
-    price = models.FloatField(blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    unit = models.CharField(max_length=50, blank=False)
+    name = models.CharField(max_length=50, blank=False, verbose_name=_("Name"))
+    price = models.FloatField(blank=True, verbose_name=_("Price"))
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name=_("Category"))
+    unit = models.CharField(max_length=50, blank=False, verbose_name=_("Unit"))
 
     class Meta:
         constraints = [
@@ -72,9 +72,9 @@ class Order(models.Model):
         ('shp', 'Shipped'),
     ]
 
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, verbose_name=_("Customer"))
     status = models.CharField(
-        max_length=50, blank=False, choices=ORDER_STATUSES)
+        max_length=50, blank=False, choices=ORDER_STATUSES, verbose_name=_("Status"))
 
     def __str__(self) -> str:
         return str(self.id)
@@ -121,11 +121,11 @@ class OrderedItem(models.Model):
         ('pkd', 'Packed'),
     ]
 
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.IntegerField(blank=False)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_("Item"))
+    quantity = models.IntegerField(blank=False, verbose_name=_("Quantity"))
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name=_("Order"))
     status = models.CharField(
-        max_length=50, blank=False, default='nok', choices=ITEM_STATUSES)
+        max_length=50, blank=False, default='nok', choices=ITEM_STATUSES, verbose_name=_("Status"))
 
     class Meta:
         constraints = [
