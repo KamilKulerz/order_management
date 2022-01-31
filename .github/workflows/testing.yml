@@ -27,5 +27,5 @@ jobs:
           SECRET_KEY: 6e73f96b23bb58f7e80a1cde8bfa87ef503152e5e1802f9e26
         run: |
           pip install coverage
-          coverage run manage.py test
+          coverage run --branch -m pytest
           coverage report
