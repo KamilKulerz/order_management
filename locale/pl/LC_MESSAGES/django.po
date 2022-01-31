@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-31 18:47+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\core\settings.py:153
+msgid "English"
+msgstr "Angielski"
+
+#: .\core\settings.py:154
+msgid "Polish"
+msgstr "Polski"
+
+#: .\orders_app\models.py:14 .\orders_app\models.py:29
+#: .\orders_app\models.py:43
+msgid "Name"
+msgstr "Nazwa"
+
+#: .\orders_app\models.py:44
+msgid "Price"
+msgstr "Cena"
+
+#: .\orders_app\models.py:45
+msgid "Category"
+msgstr "Kategoria"
+
+#: .\orders_app\models.py:46
+msgid "Unit"
+msgstr "Jednostka"
+
+#: .\orders_app\models.py:55
+msgid "Price must be greater than 0"
+msgstr "Cena musi być większa niż 0"
+
+#: .\orders_app\models.py:75
+msgid "Customer"
+msgstr "Klient"
+
+#: .\orders_app\models.py:77 .\orders_app\models.py:128
+msgid "Status"
+msgstr "Status"
+
+#: .\orders_app\models.py:124
+msgid "Item"
+msgstr "Towar"
+
+#: .\orders_app\models.py:125
+msgid "Quantity"
+msgstr "Ilość"
+
+#: .\orders_app\models.py:126
+msgid "Order"
+msgstr "Zamówienie"
+
+#: .\orders_app\models.py:138
+msgid "Quantity must be greater than 0"
+msgstr "Ilość musi być większa niż 0"
+
+#: .\orders_app\views.py:41
+msgid "Homepage"
+msgstr "Stron startowa"
+
+#: .\orders_app\views.py:42
+msgid "You are not staff"
+msgstr "Nie masz uprawnień"
+
+#: .\orders_app\views.py:43
+msgid "Welcome"
+msgstr "Witamy"
+
+#: .\orders_app\views.py:44
+msgid "You have total of"
+msgstr "Masz"
+
+#: .\orders_app\views.py:45
+msgid "orders"
+msgstr "zamówień"

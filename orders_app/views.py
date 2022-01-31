@@ -13,6 +13,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import DeleteView, UpdateView
 from django_stubs_ext.aliases import ValuesQuerySet
+from django.utils.translation import gettext as _
 
 from orders_app.models import Category, Customer, Item, Order, OrderedItem
 
@@ -35,6 +36,7 @@ def home(request) -> HttpResponse:
 
     context['no_of_orders'] = no_of_orders
     context['groupped_summary'] = groupped
+
     return render(request, 'orders_app/home.html', context)
 
 

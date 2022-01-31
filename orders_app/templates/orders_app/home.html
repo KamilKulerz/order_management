@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% load i18n %}
+
 <script>
     $(document).ready(function(){
       $('.toast').toast('show');
@@ -13,14 +15,14 @@
 <div class="card shadow">
     {% if not user.is_staff %}
         <div class="card-body">
-            <h1 align="center">Homepage</h1>
-            <h3 align="center">Your are not staff</h3>
+            <h1 align="center">{% translate "Homepage" %}</h1>
+            <h3 align="center">{% translate "You are not staff" %}</h3>
         </div>
         </div>
     {% else %}
         <div class="card-body">
-            <h1 align="center">Welcome</h1>
-            <h3 align="center">You have total of {{no_of_orders}} orders</h3>
+            <h1 align="center">{% translate "Welcome" %}</h1>
+            <h3 align="center">{% translate "You have total of" %} {{no_of_orders}} {% translate "orders" %}</h3>
             <ul>
               {% for status in groupped_summary %}
                 <p align="center">{{status.status}}: {{status.status__count}}</p>

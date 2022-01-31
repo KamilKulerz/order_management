@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ms-3">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -18,6 +20,24 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'orders_app:categories' %}">Categories</a>
         </li> 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Language
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+
+            {% for lang in languages %}
+              <li>
+              <a class="dropdown-item" href="/{{ lang.code }}/">
+                  {{ lang.name_local }}
+              </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
       </ul>
     </div>
   </nav>
