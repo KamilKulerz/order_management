@@ -23,6 +23,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Coverage report
+        env:
+          SECRET_KEY: 6e73f96b23bb58f7e80a1cde8bfa87ef503152e5e1802f9e26
         run: |
           pip install coverage
           coverage run manage.py test
