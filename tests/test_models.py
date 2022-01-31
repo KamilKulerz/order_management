@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 import pytest
 from django.contrib.auth.models import User
 from orders_app.models import Category, Customer, Item, Order, OrderedItem
@@ -148,3 +149,8 @@ def test_delete_cat_with_item_assigned(new_cat, new_item):
 def test_delete_customer_with_existing_orders(new_order, new_customer):
     new_customer.delete()
     assert new_order.customer.id is None
+
+
+def test_price_less_than_0(new_item_factory, new_cat):
+    with pytest.raises(IntegrityError):
+        new_item_factory('test item', -10.01, new_cat, 'szt.')
